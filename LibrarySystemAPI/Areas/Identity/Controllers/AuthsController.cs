@@ -23,7 +23,6 @@ namespace LibrarySystemAPI.Areas.Identity.Controllers
             _configuration = configuration;
         }
 
-        // 1. تسجيل حساب جديد (Register)
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
@@ -46,14 +45,12 @@ namespace LibrarySystemAPI.Areas.Identity.Controllers
             return Ok(new AuthResponseDto(true, "User created successfully!"));
         }
 
-        // 2. تسجيل الدخول وتوليد الـ Token (Login)
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
             var user = await _userManager.FindByEmailAsync(dto.Email);
             if (user != null && await _userManager.CheckPasswordAsync(user, dto.Password))
             {
-                // توليد الـ Token للمستخدم
                 var authClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.UserName!),
